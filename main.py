@@ -1,12 +1,11 @@
 import csv
 import sys
+import pandas as pd
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 maxInt = sys.maxsize
 
 while True:
-    # decrease the maxInt value by factor 10
-    # as long as the OverflowError occurs.
 
     try:
         csv.field_size_limit(maxInt)
@@ -22,11 +21,15 @@ if __name__ == '__main__':
     with open('GitterCom.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            #print(row['message'])
+            #print(row['message']) This line is to print out all the messages.
             list_sentiments.append(sia.polarity_scores(row['message']))
 
-    #for sentiment in list_sentiments:
-    #    print(sentiment)
+    df = pd.read_csv('GitterCom.csv')
+    df['sentiments'] = list_sentiments
+    print(df)
+
+    df.to_csv("GitterCom.csv")
+
 
 
 
